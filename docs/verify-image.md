@@ -7,6 +7,10 @@ Verify it before you pull the image into anything you care about.
 
 ## Install cosign
 
+You need **cosign 3.0 or later**. Images are signed with cosign 3, which
+stores the signature in a newer format; cosign 2.x reports
+`no signatures found` for them.
+
 Pick one:
 
 ```sh
@@ -16,6 +20,15 @@ brew install cosign          # macOS
 or download a release binary from the
 [cosign releases page](https://github.com/sigstore/cosign/releases) and
 follow its install instructions for your platform.
+
+Or install nothing and run cosign from its official container image:
+
+```sh
+docker run --rm gcr.io/projectsigstore/cosign:v3.0.6 verify \
+  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.3.0 \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  ghcr.io/cryptolabsza/vast-price-manager@sha256:5080eaf420f997b8943496a036c16153208fa2661cf6d25b45f89dc2a9e63984
+```
 
 ## Verify
 
@@ -38,8 +51,9 @@ cosign verify \
   ghcr.io/cryptolabsza/vast-price-manager@sha256:5080eaf420f997b8943496a036c16153208fa2661cf6d25b45f89dc2a9e63984
 ```
 
-A successful check prints the signing certificate's details and ends with
-one or more verified signature entries. If it fails, do not run that
+A successful check prints "The cosign claims were validated", confirms the
+transparency-log entry and the certificate chain, and then prints the
+verified signature entries as JSON. If it fails, do not run that
 image — either the reference is wrong, or the image was not built and
 signed by the expected release workflow.
 
