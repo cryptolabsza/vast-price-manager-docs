@@ -48,6 +48,32 @@ Vast.ai console — it is a narrow, careful layer on top of one account.
   re-checked before every sensitive action (adding a key, turning writes
   on, changing what a machine can do).
 
+## Screenshots
+
+The screenshots below show VPM's real interface running against a sample
+fleet (synthetic data, generated for this README) spanning DGX H200, H100
+SXM, HGX A100, and RTX 5090 machines — the CLI screenshot uses the real
+`vastai show machines` column layout.
+
+<p align="center">
+  <img src="docs/images/vpm-overview.png" width="49%"
+       alt="VPM Overview page: fleet summary metrics (discovered machines, earnings, dry-run decisions), fleet capacity (total/running GPUs, occupancy), and provider-team panels.">
+  <img src="docs/images/vpm-machines.png" width="49%"
+       alt="VPM Machines page: per-machine inventory table showing GPU type and count, listing status, auto-pricing management state, and hold reasons for each machine.">
+</p>
+<p align="center">
+  <img src="docs/images/vpm-machine-detail.png" width="49%"
+       alt="VPM machine detail page for one H200 machine: pricing settings, management toggles, and host capacity (total/running GPUs, occupancy).">
+  <img src="docs/images/vpm-earnings.png" width="49%"
+       alt="VPM Earnings page: 30-day GPU, storage, and bandwidth earnings totals, plus per-machine and per-day aggregate tables.">
+</p>
+<p align="center">
+  <img src="docs/images/vpm-pricing-decisions.png" width="49%"
+       alt="VPM Recent price evaluations list: proposed GPU prices per machine, each tagged dry_run because provider writes are disabled.">
+  <img src="docs/images/vpm-vastai-cli.png" width="49%"
+       alt="Terminal output of vastai show machines listing the same fleet, in the real vastai CLI's own column layout.">
+</p>
+
 ## Safety model, in plain words
 
 - **Nothing is live by default.** The container starts with writes
