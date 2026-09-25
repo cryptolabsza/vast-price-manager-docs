@@ -35,7 +35,7 @@ For example, for version `0.3.0`:
 cosign verify \
   --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.3.0 \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  ghcr.io/cryptolabsza/vast-price-manager@sha256:REPLACE_WITH_RELEASE_REF
+  ghcr.io/cryptolabsza/vast-price-manager@sha256:5080eaf420f997b8943496a036c16153208fa2661cf6d25b45f89dc2a9e63984
 ```
 
 A successful check prints the signing certificate's details and ends with

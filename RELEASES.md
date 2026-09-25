@@ -7,7 +7,7 @@ pull it — see [docs/verify-image.md](docs/verify-image.md). Never use
 
 | Version | Pinned image reference | Published | Notes |
 |---|---|---|---|
-| 0.3.0 | `ghcr.io/cryptolabsza/vast-price-manager:0.3.0@sha256:REPLACE_WITH_RELEASE_REF` | not yet published | Placeholder row — first public release. This table will be updated with the real digest once the image is published. |
+| 0.3.0 | `ghcr.io/cryptolabsza/vast-price-manager:0.3.0@sha256:5080eaf420f997b8943496a036c16153208fa2661cf6d25b45f89dc2a9e63984` | 2026-09-25 | First public release. Signed with cosign; see [docs/verify-image.md](docs/verify-image.md). |
 
 This table, not the private source repository, is the authoritative
 version → image mapping for anyone using VPM standalone.
