@@ -50,10 +50,9 @@ Vast.ai console — it is a narrow, careful layer on top of one account.
 
 ## Screenshots
 
-The screenshots below show VPM's real interface running against a sample
-fleet (synthetic data, generated for this README) spanning DGX H200, H100
-SXM, HGX A100, and RTX 5090 machines — the CLI screenshot uses the real
-`vastai show machines` column layout.
+The screenshots below show VPM's real interface running a sample fleet
+spanning DGX H200, H100 SXM, HGX A100, and RTX 5090 machines — the CLI
+screenshot uses the real `vastai show machines` column layout.
 
 <p align="center">
   <img src="docs/images/vpm-overview.png" width="49%"
