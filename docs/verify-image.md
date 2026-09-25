@@ -29,11 +29,11 @@ cosign verify \
   <pinned ref>
 ```
 
-For example, for version `0.2.0`:
+For example, for version `0.3.0`:
 
 ```sh
 cosign verify \
-  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.2.0 \
+  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.3.0 \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   ghcr.io/cryptolabsza/vast-price-manager@sha256:REPLACE_WITH_RELEASE_REF
 ```

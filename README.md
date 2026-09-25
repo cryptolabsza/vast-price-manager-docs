@@ -96,8 +96,17 @@ Requirements: Docker and Docker Compose. Nothing else to install.
    docker run --rm "$(sed -n 's/^VPM_IMAGE=//p' .env)" \
      python -c "from cryptography.fernet import Fernet; import sys; sys.stdout.buffer.write(Fernet.generate_key())" \
      > master.key
-   chmod 600 master.key
+   sudo chown 999:999 master.key && sudo chmod 400 master.key
    ```
+
+   The `chown` matters on a native Linux Docker host: VPM always runs as
+   UID 999 inside its container, and a plain `chmod 600` alone leaves the
+   file owned by *you*, which VPM's own user cannot read — Compose's
+   file-based secret is a bind mount, not a copy, so the host file's
+   owner and mode are exactly what the container sees. (Docker Desktop's
+   file-sharing layer can hide this — see
+   [docs/troubleshooting.md](docs/troubleshooting.md#master-key-not-readable) —
+   which is why the `chown` is still worth doing there too.)
 
 4. Start the stack and initialize the database:
 

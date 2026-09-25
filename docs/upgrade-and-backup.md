@@ -37,11 +37,16 @@ docker run --rm \
   alpine tar czf /backup/vpm-data-$(date +%Y%m%d).tar.gz -C / data
 ```
 
-Back up the key at the same time:
+Back up the key at the same time. `master.key` is owned by UID 999 —
+see the quickstart in [README.md](../README.md) for why — so reading it
+back needs `sudo`; hand the copy back to yourself right after so it's a
+normal file you can move around:
 
 ```sh
-cp master.key "master.key.$(date +%Y%m%d).bak"
-chmod 600 master.key.*.bak
+STAMP=$(date +%Y%m%d)
+sudo cp master.key "master.key.$STAMP.bak"
+sudo chown "$(id -u):$(id -g)" "master.key.$STAMP.bak"
+chmod 600 "master.key.$STAMP.bak"
 ```
 
 ## Upgrading
@@ -77,10 +82,14 @@ docker run --rm \
   -v "$VOL":/data \
   -v "$PWD":/backup \
   alpine sh -c "cd / && tar xzf /backup/vpm-data-YYYYMMDD.tar.gz"
-cp master.key.YYYYMMDD.bak master.key
-chmod 600 master.key
+sudo cp master.key.YYYYMMDD.bak master.key
+sudo chown 999:999 master.key && sudo chmod 400 master.key
 docker compose up -d
 ```
+
+The `chown`/`chmod` here are the same, and just as necessary, as the ones
+in the quickstart — a restored key is a fresh file on this host and
+starts out owned by whoever ran `cp`, not by VPM's container user.
 
 Restore the database backup and the matching master-key backup together —
 a database from one date paired with a key from another will not decrypt

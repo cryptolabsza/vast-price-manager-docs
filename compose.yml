@@ -75,6 +75,9 @@ secrets:
   # /run/secrets/vpm_master_key inside the vpm container. Generate this
   # file once, before the first `docker compose up` — see the quickstart
   # in README.md. It must live next to this compose.yml, outside the
-  # named volume above.
+  # named volume above, and must be owned by UID 999 (VPM's container
+  # user) — a bind mount keeps the host file's exact owner and mode, so a
+  # plain `chmod 600` alone is not enough on a native Linux host. See
+  # docs/troubleshooting.md#master-key-not-readable if VPM can't read it.
   vpm_master_key:
     file: ./master.key

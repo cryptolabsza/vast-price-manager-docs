@@ -1,5 +1,35 @@
 # Troubleshooting
 
+## Master key not readable
+
+VPM starts, `/healthz` says `{"ok": true}`, and everything looks fine —
+until you try to add your Vast API key (or you check `/readyz`) and get
+`credential_master_unavailable`. Inside the container this shows up as a
+plain `PermissionError` reading `/run/secrets/vpm_master_key` if you go
+looking for it.
+
+The cause: Compose's file-based secret is a **bind mount**, not a copy, so
+the container sees `master.key`'s exact host owner and permission bits.
+VPM's container always runs as UID 999. If `master.key` is owned by your
+own host user (the default result of just `chmod 600 master.key`), VPM's
+own user cannot read it — on a native Linux Docker host this fails
+immediately; on Docker Desktop, the file-sharing layer sometimes
+translates ownership in a way that hides the problem, so it can work on
+your laptop and fail the same host you deployed it to.
+
+Fix it by handing the file to UID 999 directly:
+
+```sh
+sudo chown 999:999 master.key
+sudo chmod 400 master.key
+```
+
+Do this once, right after you generate `master.key` (the quickstart in
+[README.md](../README.md) already includes it) and again any time you
+restore it from a backup (see
+[upgrade-and-backup.md](upgrade-and-backup.md)) — a restored copy starts
+out owned by whoever ran the restore, not by VPM.
+
 ## `docker compose up` fails: address already in use (port 443 or 80)
 
 Something else on your machine — a VPN client, another web server, a tool
