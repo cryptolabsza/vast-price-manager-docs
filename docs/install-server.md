@@ -53,6 +53,12 @@ sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 ```
 
+Let your user run `docker` without `sudo`, then log out and back in:
+
+```sh
+sudo usermod -aG docker "$USER"
+```
+
 Commands above are for Ubuntu, copied from Docker's own
 [Ubuntu install page](https://docs.docker.com/engine/install/ubuntu/). On
 Debian, follow Docker's [Debian install page](https://docs.docker.com/engine/install/debian/)
@@ -61,7 +67,7 @@ instead — same idea, one different repository URL.
 ## 2. Get the release files
 
 ```sh
-sudo mkdir -p /opt/vpm && cd /opt/vpm
+sudo mkdir -p /opt/vpm && sudo chown "$USER" /opt/vpm && cd /opt/vpm
 curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.0/compose.yml
 curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.0/Caddyfile
 curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.0/env.example
