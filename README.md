@@ -17,7 +17,7 @@
 Needs Docker and Docker Compose. About 10 minutes.
 
 1. Get `compose.yml`, `Caddyfile`, and `.env.example` (clone this repo, or download the three files) and open a terminal there.
-2. Copy the env template, then set `VPM_IMAGE` to the pinned image from [RELEASES.md](RELEASES.md) (verify first with [docs/verify-image.md](docs/verify-image.md); never `:latest`).
+2. Copy the env template. It already points at the current signed image from [RELEASES.md](RELEASES.md) (optional: [verify its signature](docs/verify-image.md)).
 
    ```sh
    cp .env.example .env
