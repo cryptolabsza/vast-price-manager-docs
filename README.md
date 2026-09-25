@@ -14,7 +14,8 @@
 
 ## Quickstart
 
-Needs Docker and Docker Compose. About 10 minutes.
+Needs Docker and Docker Compose. About 10 minutes. Setting up a server or
+VM instead? See [docs/install-server.md](docs/install-server.md).
 
 1. Get `compose.yml`, `Caddyfile`, and `.env.example` (clone this repo, or download the three files) and open a terminal there.
 2. Copy the env template. It already points at the current signed image from [RELEASES.md](RELEASES.md) (optional: [verify its signature](docs/verify-image.md)).
@@ -63,6 +64,7 @@ VPM's real interface, on a sample fleet spanning DGX H200, H100 SXM, HGX A100, a
 ## Docs
 
 - [docs/first-run.md](docs/first-run.md) — admin login, your Vast account ID, adding your API key, enabling writes.
+- [docs/install-server.md](docs/install-server.md) — running VPM on your own server or VM instead of a laptop.
 - [docs/configuration.md](docs/configuration.md) — every environment setting, its default, when to change it.
 - [docs/self-test.md](docs/self-test.md) — installing the optional Vast CLI and running machine self-test.
 - [docs/upgrade-and-backup.md](docs/upgrade-and-backup.md) — pinning by digest, backups, restoring.
