@@ -19,7 +19,13 @@ source code.
 3. Third-party components. The published image contains third-party
    open-source software. Each of those components remains under its own
    original license, which continues to apply to it regardless of this
-   license. Nothing here changes or overrides those licenses.
+   license. Nothing here changes or overrides those licenses. This
+   includes packages you choose to download yourself after the fact — for
+   example, installing the optional Vast CLI to run machine self-test
+   pulls in third-party packages (including one under the AGPL) directly
+   from PyPI; those are not part of the published image, and each keeps
+   its own original license once installed. See docs/self-test.md in
+   this repository.
 
 4. Provided as is. VPM is provided "as is", without warranty of any kind,
    express or implied, including but not limited to warranties of

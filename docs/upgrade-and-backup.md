@@ -25,6 +25,13 @@ separately, and store the two backups somewhere other than side-by-side —
 either one alone is useless to an attacker, but together they decrypt
 your stored Vast API key.
 
+If you installed the optional Vast CLI (see [docs/self-test.md](self-test.md)),
+its `vast-cli` folder lives inside the `vpm_data` volume too, so the
+backup command below already includes it — but it's safe to leave out of
+a smaller backup if you want one, since it's just a downloaded copy: a
+missing `vast-cli` folder after a restore simply shows as "not installed"
+again, and the Install button puts it back.
+
 Back up the volume with a short-lived helper container so you don't have
 to stop VPM to read it. Compose prefixes the volume name with your
 project directory's name, so find the exact name first:

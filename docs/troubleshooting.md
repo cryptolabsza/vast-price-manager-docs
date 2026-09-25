@@ -123,6 +123,19 @@ Normal until your first successful sync. Run:
 docker compose exec vpm vpm sync
 ```
 
+## Self-test fails, or times out reaching a progress/status endpoint
+
+If a machine self-test fails with a connection timeout, or a message
+about being unable to reach the instance's progress or status endpoint,
+the most likely cause is not VPM or the Vast CLI — it's that VPM is
+running on the same local network as the machine you're testing. The
+test has to connect to that machine's own public IP address, and most
+routers can't route traffic from inside their own network back out to
+their own public IP ("NAT hairpinning"). See
+[docs/self-test.md](self-test.md#the-same-network-limitation-read-this-before-you-self-test)
+for the full explanation. Run VPM from a different network than the
+machine you're self-testing and try again.
+
 If it keeps happening after that, check that your Vast API key was
 accepted (Credentials page shows no error) and that
 `VPM_EXPECTED_ACCOUNT_ID` matches the account the key belongs to.

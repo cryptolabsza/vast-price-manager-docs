@@ -41,6 +41,8 @@ Vast.ai console — it is a narrow, careful layer on top of one account.
   default.
 - Supports scheduled maintenance windows, with a preview step before you
   commit to one.
+- Can run Vast's own machine self-test, once you install the optional
+  Vast CLI from the dashboard — see [docs/self-test.md](docs/self-test.md).
 - Keeps an audit log of every decision and command it runs.
 - Has exactly one administrator account, protected by a password that is
   re-checked before every sensitive action (adding a key, turning writes
@@ -133,6 +135,9 @@ Requirements: Docker and Docker Compose. Nothing else to install.
   reads from the environment, its default, and when you'd change it.
 - [docs/upgrade-and-backup.md](docs/upgrade-and-backup.md) — pinning by
   digest, backing up the data volume and master key, and restoring.
+- [docs/self-test.md](docs/self-test.md) — installing the optional Vast
+  CLI and running machine self-test, including why it needs a different
+  network than the machine you're testing.
 - [docs/verify-image.md](docs/verify-image.md) — checking the image's
   signature before you run it.
 - [docs/troubleshooting.md](docs/troubleshooting.md) — common first-run
