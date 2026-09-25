@@ -1,6 +1,6 @@
 # Vast Price Manager (VPM)
 
-VPM is a self-hosted dashboard for people who rent out GPU or CPU machines
+VPM is a self-hosted dashboard for people who rent out GPU machines
 on [Vast.ai](https://vast.ai). It watches your machines, the current market
 price for your GPU type, and your earnings, and it can adjust your listing
 price and rental end-date for you — but only for machines you explicitly
