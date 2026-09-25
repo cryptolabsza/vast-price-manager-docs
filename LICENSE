@@ -1,0 +1,32 @@
+DRAFT — for CryptoLabs owner review before publishing. Not yet final.
+
+Vast Price Manager (VPM) — Terms of Use
+========================================
+
+This is a plain-language summary of the terms that apply to the published
+VPM container image. VPM is closed source: this repository documents how
+to run VPM, but does not contain and does not grant any rights to VPM's
+source code.
+
+1. Free to use. CryptoLabs grants you a free, non-exclusive license to
+   pull and run the published VPM container image, for any purpose,
+   including commercial use of your own Vast.ai fleet.
+
+2. No redistribution of modified images. You may run the published image
+   as-is. You may not modify the image (or its contents) and redistribute
+   or republish it, under this name or any other, to any other party.
+
+3. Third-party components. The published image contains third-party
+   open-source software. Each of those components remains under its own
+   original license, which continues to apply to it regardless of this
+   license. Nothing here changes or overrides those licenses.
+
+4. Provided as is. VPM is provided "as is", without warranty of any kind,
+   express or implied, including but not limited to warranties of
+   merchantability, fitness for a particular purpose, or non-infringement.
+
+5. No liability. To the maximum extent permitted by law, CryptoLabs is
+   not liable for any damages or losses — including lost earnings, lost
+   listings, or account issues on any third-party platform — arising from
+   your use of VPM. You are responsible for reviewing what VPM does
+   before you turn on any write capability against your own account.

@@ -1,0 +1,36 @@
+{
+	# Disable the admin API; nothing in this stack needs to reconfigure
+	# Caddy at runtime, and it would otherwise listen on 127.0.0.1:2019
+	# inside the network namespace it shares with VPM.
+	admin off
+}
+
+# --- Local / "try it on my laptop" variant (active by default) ---
+# "tls internal" makes Caddy mint its own local certificate authority and a
+# leaf certificate for "localhost" instead of requesting one from Let's
+# Encrypt. Your browser and curl will not trust this certificate — that is
+# expected on localhost, and is exactly why the quickstart uses `curl -k`
+# for scripted checks and why your browser will show a warning you have to
+# click through once. See docs/first-run.md.
+localhost {
+	tls internal
+	encode gzip
+	reverse_proxy 127.0.0.1:8088
+}
+
+# --- Real-domain / production variant ---
+# When you have a real DNS name pointed at this host's public IP:
+#   1. Delete (or comment out) the "localhost { ... }" block above.
+#   2. Uncomment the block below and replace vpm.example.com with your
+#      domain.
+#   3. Set VPM_ALLOWED_HOSTS to the exact same domain in your .env — VPM's
+#      TrustedHostMiddleware rejects any other Host header, including the
+#      container's own healthcheck if the two drift apart.
+# Caddy's automatic HTTPS then obtains and renews a real Let's Encrypt
+# certificate over ACME (HTTP-01 on port 80, TLS-ALPN-01 on port 443),
+# which is why compose.yml also publishes port 80.
+#
+# vpm.example.com {
+# 	encode gzip
+# 	reverse_proxy 127.0.0.1:8088
+# }

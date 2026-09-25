@@ -1,0 +1,80 @@
+services:
+  vpm:
+    image: ${VPM_IMAGE:-REPLACE_WITH_RELEASE_REF}
+    restart: unless-stopped
+    environment:
+      # The hostname you will browse to. Must match the site block in the
+      # Caddyfile next to this file.
+      VPM_ALLOWED_HOSTS: ${VPM_ALLOWED_HOSTS:-localhost}
+      # Writes stay off until you turn them on from the dashboard yourself,
+      # after you have read docs/first-run.md. This is explicit even though
+      # it is also the image default.
+      VPM_WRITES_ENABLED: "false"
+      # Required before you can add your Vast API key on the Credentials
+      # page (see docs/first-run.md — "Find your Vast account ID"). Leave
+      # this empty for the very first login; VPM will simply not accept a
+      # key yet.
+      VPM_EXPECTED_ACCOUNT_ID: ${VPM_EXPECTED_ACCOUNT_ID:-}
+      # Fernet key for the encrypted Vast-API-key store. Supplied as a
+      # read-only file via the secrets: block below, never as an inline
+      # env var, and never inside the /data volume (see docs/first-run.md
+      # and docs/upgrade-and-backup.md for why the two must stay separate).
+      VPM_CREDENTIAL_MASTER_KEY_FILE: /run/secrets/vpm_master_key
+    secrets:
+      - vpm_master_key
+    volumes:
+      # Named volume so /data (the SQLite database and the encrypted
+      # credential slots) survives `docker compose down` (but not
+      # `docker compose down -v`). Back this volume up before every
+      # upgrade — see docs/upgrade-and-backup.md.
+      - vpm_data:/data
+    # Caddy shares this container's network namespace (network_mode:
+    # "service:vpm" below), so the published ports belong here even
+    # though Caddy is the process that actually binds them. VPM itself
+    # only ever binds 127.0.0.1:8088 inside that shared namespace — it
+    # never publishes a port on its own.
+    ports:
+      # Change these if 443/80 are already used on this host — see
+      # docs/troubleshooting.md.
+      - "${HOST_HTTPS_PORT:-443}:443"
+      - "${HOST_HTTP_PORT:-80}:80"   # only needed for the real-domain ACME variant; harmless locally
+    healthcheck:
+      # Inherited from the image; shown here only as documentation of what
+      # "healthy" means: an unauthenticated GET /healthz against
+      # 127.0.0.1:8088 with Host set to the first VPM_ALLOWED_HOSTS entry.
+      # If this never turns healthy, see docs/troubleshooting.md.
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    # Attach to vpm's network namespace instead of getting one of its own.
+    # This is what lets Caddy reach VPM at 127.0.0.1:8088 while VPM keeps
+    # its loopback-only bind. Do not try to reach VPM with `-p` / a bridge
+    # network instead of this pattern — it cannot work, see
+    # docs/troubleshooting.md.
+    network_mode: "service:vpm"
+    depends_on:
+      vpm:
+        condition: service_healthy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  vpm_data:
+  caddy_data:
+  caddy_config:
+
+secrets:
+  # File-based Compose secret: bind-mounted read-only at
+  # /run/secrets/vpm_master_key inside the vpm container. Generate this
+  # file once, before the first `docker compose up` — see the quickstart
+  # in README.md. It must live next to this compose.yml, outside the
+  # named volume above.
+  vpm_master_key:
+    file: ./master.key
