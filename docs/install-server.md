@@ -68,9 +68,9 @@ instead — same idea, one different repository URL.
 
 ```sh
 sudo mkdir -p /opt/vpm && sudo chown "$USER" /opt/vpm && cd /opt/vpm
-curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.1/compose.yml
-curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.1/Caddyfile
-curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.1/env.example
+curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.2/compose.yml
+curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.2/Caddyfile
+curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.2/env.example
 mv env.example .env
 ```
 

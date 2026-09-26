@@ -25,9 +25,9 @@ Or install nothing and run cosign from its official container image:
 
 ```sh
 docker run --rm gcr.io/projectsigstore/cosign:v3.0.6 verify \
-  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.3.1 \
+  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.3.2 \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  ghcr.io/cryptolabsza/vast-price-manager@sha256:413e30b52cc3e1250c2e7f08a02e7af168446321a75be63e34718dffd6fc1c56
+  ghcr.io/cryptolabsza/vast-price-manager@sha256:b99d1c88723e0182ca297725219ed65e603ed3fa939d1d8caa61b1417940e927
 ```
 
 ## Verify
@@ -42,13 +42,13 @@ cosign verify \
   <pinned ref>
 ```
 
-For example, for version `0.3.1`:
+For example, for version `0.3.2`:
 
 ```sh
 cosign verify \
-  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.3.1 \
+  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.3.2 \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  ghcr.io/cryptolabsza/vast-price-manager@sha256:413e30b52cc3e1250c2e7f08a02e7af168446321a75be63e34718dffd6fc1c56
+  ghcr.io/cryptolabsza/vast-price-manager@sha256:b99d1c88723e0182ca297725219ed65e603ed3fa939d1d8caa61b1417940e927
 ```
 
 A successful check prints "The cosign claims were validated", confirms the

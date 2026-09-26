@@ -1,6 +1,6 @@
 services:
   vpm:
-    image: ${VPM_IMAGE:-ghcr.io/cryptolabsza/vast-price-manager:0.3.1@sha256:413e30b52cc3e1250c2e7f08a02e7af168446321a75be63e34718dffd6fc1c56}
+    image: ${VPM_IMAGE:-ghcr.io/cryptolabsza/vast-price-manager:0.3.2@sha256:b99d1c88723e0182ca297725219ed65e603ed3fa939d1d8caa61b1417940e927}
     restart: unless-stopped
     environment:
       # The hostname you will browse to. Must match the site block in the
