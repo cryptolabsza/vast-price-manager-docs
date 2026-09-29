@@ -1,20 +1,20 @@
 # Configuration reference
 
-Every setting VPM reads from the environment, grouped by how often you'll
-actually touch it. Two settings — `compose.yml`'s `VPM_ALLOWED_HOSTS` and
-`.env`'s `VPM_EXPECTED_ACCOUNT_ID` — are already wired up for you in this
-repo's `compose.yml`; everything else is an environment variable you can
-add to the `vpm` service's `environment:` block in `compose.yml` if you
-need it.
+Every setting VPM reads from the environment, grouped by how often you will
+touch it. The appliance installation normally needs none of them. The manual
+standalone Caddy recipe wires its values through `.env` and `compose.yml`.
+An explicit environment value always takes precedence over appliance discovery.
 
 ## Settings you'll actually set
 
 | Variable | Default | When to set it |
 |---|---|---|
-| `VPM_CREDENTIAL_MASTER_KEY_FILE` | none (required) | Already set in `compose.yml` to the Compose secret file. Don't change this unless you change how the master key is mounted. |
-| `VPM_EXPECTED_ACCOUNT_ID` | none | Set to your Vast.ai numeric account ID before you can add your API key. See [first-run.md](first-run.md#2-find-your-vast-account-id). |
-| `VPM_ALLOWED_HOSTS` | `127.0.0.1,localhost` | Set to the exact hostname you browse to (must match your Caddyfile site block). Required, non-empty; the first entry is also the Host header VPM's own healthcheck uses. |
-| `VPM_WRITES_ENABLED` | `false` | Only after you've read [first-run.md](first-run.md#6-enabling-writes-safely) in full. This is the process-level half of the write gate; it needs a container restart to take effect either way. |
+| `VPM_CREDENTIAL_MASTER_KEY_FILE` | appliance: `/keys/master.key`; standalone: none (required) | The appliance creates and retains its key in the separate `/keys` volume. The manual Compose recipe mounts `master.key` as a secret. Do not move either key inside `/data`. |
+| `VPM_EXPECTED_ACCOUNT_ID` | none | Optional in guided local-auth setup (appliance or standalone): if set, it overrides account discovery and the key must match it. Required before the manual account-ID path accepts a key; see [first-run.md](first-run.md#2-find-your-vast-account-id). |
+| `VPM_ALLOWED_HOSTS` | appliance: `*`; standalone: `127.0.0.1,localhost` | In appliance mode, set it before first start to include hostnames in the generated local certificate; existing generated TLS files are retained. In the manual recipe, set the exact hostname that matches Caddy. |
+| `VPM_WRITES_ENABLED` | `false` | An explicit value overrides appliance browser control and takes effect when the process is recreated. When omitted in appliance mode, Settings persists the global write choice. The manual Compose recipe exposes this as `.env` interpolation and uses the process-level gate. |
+| `VPM_SETUP_ENABLED` | `true` | Available in local-auth appliance and standalone deployments. The manual Compose recipe explicitly defaults it to `false` for the account-ID/credential path; set it to `true` in `.env` only to use guided local-auth setup. |
+| `VPM_TLS_CERT_FILE` + `VPM_TLS_KEY_FILE` | generated local certificate | Set both to use mounted TLS material in appliance mode. Supplying only one prevents startup. |
 
 ## Settings you'll rarely need
 
@@ -45,15 +45,15 @@ need it.
 | `VPM_DECISION_RETENTION` | `5000` | How many past pricing/end-date decisions VPM keeps. |
 | `VPM_AUDIT_RETENTION` | `10000` | How many audit-log entries VPM keeps. |
 
-## Settings that don't apply to this recipe
+## Deployment-shape settings
 
-These exist in VPM for other deployment shapes — for example, being
-embedded behind another proxy as part of a larger internal deployment.
-Leave them unset for the standalone setup in this repo.
+These settings describe the deployment boundary. The appliance uses its image
+default; the manual recipe sets `standalone` explicitly. `container_proxy` is
+for an embedded private proxy and needs its additional settings.
 
 | Variable | Default | Notes |
 |---|---|---|
-| `VPM_DEPLOYMENT_MODE` | `standalone` | The other value, `container_proxy`, is for being embedded behind another proxy's network and needs several other settings alongside it. Not used here. |
+| `VPM_DEPLOYMENT_MODE` | image default: `appliance` | `appliance` serves HTTPS on `0.0.0.0:8088` in the container. `standalone` is the manual Caddy recipe and binds loopback HTTP. `container_proxy` is for an embedded private proxy and needs several other settings. |
 | `VPM_BASE_PATH` | empty (root) | Only meaningful with `container_proxy` mode above. |
 | `VPM_AUTH_MODE` | `standalone` | The other value, `fleet`, defers all login to an external authority and requires `container_proxy` mode. Not used here. |
 | `VPM_FLEET_AUTH_URL` | none | Only used with `VPM_AUTH_MODE=fleet`. |
@@ -62,7 +62,6 @@ Leave them unset for the standalone setup in this repo.
 ## One setting to never touch here
 
 `VPM_SESSION_INSECURE` exists for local, no-container, no-proxy Python
-development only. Setting it turns off the `Secure` flag on session
-cookies, which breaks the HTTPS-only login boundary this whole recipe is
-built around. Nothing in this repo needs it, and it's absent from
-`compose.yml` on purpose — leave it that way.
+development only. Setting it turns off the `Secure` flag on session cookies,
+which breaks the HTTPS login boundary. Nothing in this repo needs it; leave it
+unset.
