@@ -8,12 +8,14 @@ below exists to keep it that way until you explicitly say otherwise.
 The container starts with writes disabled. It only reads your account and
 shows you what it would do.
 
-## Turning writes on takes two deliberate steps
+## Turning writes on is deliberate
 
-First you flip a process-level switch (an environment variable, which
-needs a restart). Then, inside the dashboard, you type an exact
-confirmation phrase after re-entering your password. See
-[first-run.md](first-run.md#6-enabling-writes-safely).
+In the appliance default, Settings stores the global write choice after a
+current-password confirmation. An explicit `VPM_WRITES_ENABLED` environment
+value overrides that browser control and needs a restart to change. The manual
+standalone/Caddy route uses that explicit process-level setting before its
+in-app confirmation. In every deployment, a machine still needs its own
+reviewed management opt-in before VPM can change it.
 
 ## Per-machine controls are opt-in and independent
 
@@ -29,13 +31,13 @@ incomplete information.
 
 ## Your Vast API key is encrypted at rest
 
-It's stored encrypted, using a separate master key file kept outside the
-data volume on purpose. See [first-run.md](first-run.md) and
-[upgrade-and-backup.md](upgrade-and-backup.md) for why that split matters
-and how to back both pieces up correctly.
+It's stored encrypted. The appliance keeps its master key in `/keys` and state
+in `/data`; the manual recipe keeps `master.key` outside its data volume.
+See [upgrade-and-backup.md](upgrade-and-backup.md) for how to back up both
+pieces correctly.
 
 ## Login is HTTPS-only
 
-Session cookies are marked `Secure`, so VPM always needs a
-TLS-terminating proxy in front of it. This repo ships one (Caddy),
-already configured for you.
+Session cookies are marked `Secure`. The appliance serves HTTPS itself with a
+generated local certificate or mounted TLS material. The separate manual
+standalone recipe uses Caddy as its TLS terminator.
