@@ -14,33 +14,28 @@
 
 ## Quickstart
 
-Needs Docker and Docker Compose. About 10 minutes. Setting up a server or
-VM instead? See [docs/install-server.md](docs/install-server.md).
+The 0.4.0 appliance starts with one container. Its image is pinned to the
+published release digest below; verify its signature as described in
+[RELEASES.md](RELEASES.md). Do not substitute `:latest`.
 
-1. Get `compose.yml`, `Caddyfile`, and `.env.example` (clone this repo, or download the three files) and open a terminal there.
-2. Copy the env template. It already points at the current signed image from [RELEASES.md](RELEASES.md) (optional: [verify its signature](docs/verify-image.md)).
+```sh
+docker run -d --name vpm --restart unless-stopped --stop-timeout 60 \
+  -p 8443:8088 \
+  -v vpm_data:/data \
+  -v vpm_keys:/keys \
+  ghcr.io/cryptolabsza/vast-price-manager:0.4.0@sha256:20c1e3a4b66ddd723ea1e3c635e0b7dec3f8cc88fe29f4e27e54f1686954eead
+```
 
-   ```sh
-   cp .env.example .env
-   ```
+Then open **`https://YOUR-SERVER:8443`** (or `https://localhost:8443` on
+the Docker host), accept the local-certificate warning, and read the one-time
+login from `docker logs vpm`. Sign in as `admin`, choose your own username and
+password, add your Vast key, sync the discovered machines, then set their
+prices. No API key, `.env` file, or runtime secret is needed to create the
+container. The complete browser flow is in [docs/setup-wizard.md](docs/setup-wizard.md).
 
-3. Generate the master key — VPM's container runs as UID 999, so the `chown` below is required, not just `chmod` (see [docs/troubleshooting.md](docs/troubleshooting.md#master-key-not-readable)).
-
-   ```sh
-   docker run --rm "$(sed -n 's/^VPM_IMAGE=//p' .env)" \
-     python -c "from cryptography.fernet import Fernet; import sys; sys.stdout.buffer.write(Fernet.generate_key())" \
-     > master.key
-   sudo chown 999:999 master.key && sudo chmod 400 master.key
-   ```
-
-4. Start the stack and set up the database.
-
-   ```sh
-   docker compose up -d
-   docker compose exec vpm vpm init-db
-   ```
-
-5. Open `https://localhost` (or your `HOST_HTTPS_PORT`), click through the local certificate warning, then continue in **[docs/first-run.md](docs/first-run.md)** to log in, add your Vast API key, and turn writes on when you're ready.
+Need Docker Compose, an existing Caddy setup, or explicit environment/CLI
+control? The [manual standalone guide](docs/first-run.md) keeps the existing
+`.env` and Caddy layout. For a server or VM, see [docs/install-server.md](docs/install-server.md).
 
 ## Screenshots
 
@@ -56,14 +51,15 @@ VPM's real interface, on a sample fleet spanning DGX H200, H100 SXM, HGX A100, a
 
 ## Safe by default
 
-- **Off by default.** Writes are disabled until you turn them on yourself, twice, on purpose.
+- **Off by default.** Writes stay disabled until you enable them in Settings and opt in a reviewed machine.
 - **Held, not guessed.** Any missing or contradictory fact makes VPM leave a machine alone.
-- **Encrypted key.** Your Vast API key is encrypted at rest, with its master key kept outside the data volume.
-- **HTTPS-only.** Login always needs TLS in front of VPM — this repo ships that for you. Full details: [docs/safety.md](docs/safety.md).
+- **Encrypted key.** Your Vast API key is encrypted at rest; the appliance keeps its master key on the separate `vpm_keys` volume.
+- **HTTPS-only.** The appliance serves HTTPS itself; the manual standalone recipe keeps Caddy in front of VPM. Full details: [docs/safety.md](docs/safety.md).
 
 ## Docs
 
-- [docs/first-run.md](docs/first-run.md) — admin login, your Vast account ID, adding your API key, enabling writes.
+- [docs/setup-wizard.md](docs/setup-wizard.md) — appliance container, browser login, key, sync, and pricing setup.
+- [docs/first-run.md](docs/first-run.md) — manual `.env`, Caddy, CLI, and advanced setup.
 - [docs/install-server.md](docs/install-server.md) — running VPM on your own server or VM instead of a laptop.
 - [docs/configuration.md](docs/configuration.md) — every environment setting, its default, when to change it.
 - [docs/self-test.md](docs/self-test.md) — installing the optional Vast CLI and running machine self-test.

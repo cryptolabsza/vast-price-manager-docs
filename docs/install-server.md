@@ -1,8 +1,15 @@
 # Run VPM on your own server or VM
 
-For running VPM somewhere other than your laptop — a small cloud VM, a
-home server, a spare box. Same image, same compose file, different
-network setup.
+For a new server, use the [appliance setup guide](setup-wizard.md): publish
+`8443:8088`, open `https://YOUR-SERVER:8443`, then complete login, account
+connection, sync, and pricing in the browser. The appliance serves HTTPS itself
+and needs no `.env`, master-key file, or Caddy sidecar at container creation.
+
+The rest of this page is the separate manual standalone/Caddy path for people
+who need explicit `.env` or CLI control.
+
+For the manual route, this works on a small cloud VM, a home server, or a spare
+box: the same Caddy Compose stack with different network setup.
 
 ## What you need
 
@@ -64,17 +71,17 @@ Commands above are for Ubuntu, copied from Docker's own
 Debian, follow Docker's [Debian install page](https://docs.docker.com/engine/install/debian/)
 instead — same idea, one different repository URL.
 
-## 2. Get the release files
+## Manual path: 2. Get the release files
 
 ```sh
 sudo mkdir -p /opt/vpm && sudo chown "$USER" /opt/vpm && cd /opt/vpm
-curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.2/compose.yml
-curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.2/Caddyfile
-curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.3.2/env.example
+curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.4.0/compose.yml
+curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.4.0/Caddyfile
+curl -fsSLO https://github.com/cryptolabsza/vast-price-manager-docs/releases/download/v0.4.0/env.example
 mv env.example .env
 ```
 
-## 3. Choose how you'll reach VPM
+## Manual path: 3. Choose how you'll reach VPM
 
 ### Option A — public domain, automatic HTTPS
 
@@ -111,16 +118,16 @@ specifically need to reach VPM from outside your network.
    connect — expected, since nothing outside your network can vouch for a
    private hostname's certificate. Click through it.
 
-## 4. Set up and log in
+## Manual path: 4. Set up and log in
 
 From here it's the same as any other install:
 
-1. Generate the master key and start the stack — [README.md quickstart, steps 3–4](../README.md#quickstart).
+1. Generate the master key and start the stack — [manual first-run prerequisites](first-run.md#before-the-first-login).
 2. Log in and configure VPM — [first-run.md](first-run.md).
 
 Nothing about running on a server changes those steps.
 
-## Warnings
+## Manual-path warnings
 
 - **Never publish port 8088** (no `8088:8088` in `compose.yml`'s
   `ports:`). VPM expects to be reached only through Caddy's HTTPS port;

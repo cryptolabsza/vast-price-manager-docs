@@ -1,8 +1,28 @@
-# First run
+# Manual standalone first run
 
-Picks up after the [README](../README.md) quickstart — container up,
-healthy, `vpm init-db` done. Everything below is browser-based, except
-the one command that mints your first password.
+This page is for the existing `.env` + `compose.yml` + Caddy deployment. For a
+new single-container install, use the [appliance setup guide](setup-wizard.md).
+The manual recipe sets `VPM_SETUP_ENABLED=false` so this account-ID path remains
+predictable. Set it to `true` in `.env` only when deliberately using guided
+local-auth setup.
+
+## Before the first login
+
+Copy `.env.example` to `.env`, which already carries the 0.4.0 release pin,
+then generate the separate master key. VPM's container runs as UID 999, so the
+ownership change is required.
+
+```sh
+docker run --rm "$(sed -n 's/^VPM_IMAGE=//p' .env)" \
+  python -c "from cryptography.fernet import Fernet; import sys; sys.stdout.buffer.write(Fernet.generate_key())" \
+  > master.key
+sudo chown 999:999 master.key && sudo chmod 400 master.key
+docker compose up -d
+docker compose exec vpm vpm init-db
+```
+
+Everything below is browser-based, except the one command that mints your first
+password.
 
 ## 1. Create your admin login
 
@@ -89,13 +109,13 @@ listing.
   `expected_account_not_configured` or `read_sync_stale` clear one by one
   as you finish each step above — expected, not an error.
 
-## 6. Enabling writes safely
+## 6. Enabling writes safely in the manual deployment
 
-Two deliberate steps, both required:
+Three deliberate controls are required:
 
 1. **Process-level switch.** Set `VPM_WRITES_ENABLED=true` in `.env` and
-   restart (`docker compose up -d`). Alone, this changes nothing — it
-   just unlocks the in-app switch.
+   recreate the container (`docker compose up -d`). Alone, this changes
+   nothing — it just unlocks the in-app switch.
 2. **In-app confirmation.** In **Settings**, re-enter your password and
    type the exact confirmation phrase. Only then can you check a
    per-machine box.
@@ -105,4 +125,5 @@ Two deliberate steps, both required:
 
 Start with writes off, watch the dry-run decisions for a while, and
 enable only machines you've reviewed. Turn the process switch back off
-any time — no password needed, takes effect immediately.
+any time, then recreate the container with `docker compose up -d`; no password
+is needed for that process-level change.

@@ -1,15 +1,20 @@
 services:
   vpm:
-    image: ${VPM_IMAGE:-ghcr.io/cryptolabsza/vast-price-manager:0.3.2@sha256:b99d1c88723e0182ca297725219ed65e603ed3fa939d1d8caa61b1417940e927}
+    image: ${VPM_IMAGE:-ghcr.io/cryptolabsza/vast-price-manager:0.4.0@sha256:20c1e3a4b66ddd723ea1e3c635e0b7dec3f8cc88fe29f4e27e54f1686954eead}
     restart: unless-stopped
+    stop_grace_period: 60s
     environment:
+      # Keep this recipe on the manual Caddy/loopback deployment path.
+      VPM_DEPLOYMENT_MODE: standalone
+      # Keep the documented account-ID/CLI first-run route by default. Set this
+      # to true in .env only when deliberately using guided local-auth setup.
+      VPM_SETUP_ENABLED: "${VPM_SETUP_ENABLED:-false}"
       # The hostname you will browse to. Must match the site block in the
       # Caddyfile next to this file.
       VPM_ALLOWED_HOSTS: ${VPM_ALLOWED_HOSTS:-localhost}
-      # Writes stay off until you turn them on from the dashboard yourself,
-      # after you have read docs/first-run.md. This is explicit even though
-      # it is also the image default.
-      VPM_WRITES_ENABLED: "false"
+      # Writes stay off until you deliberately set true in .env, recreate the
+      # container, and complete the dashboard confirmation.
+      VPM_WRITES_ENABLED: "${VPM_WRITES_ENABLED:-false}"
       # Required before you can add your Vast API key on the Credentials
       # page (see docs/first-run.md — "Find your Vast account ID"). Leave
       # this empty for the very first login; VPM will simply not accept a
