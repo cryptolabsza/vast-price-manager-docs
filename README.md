@@ -14,7 +14,7 @@
 
 ## Quickstart
 
-The 0.4.0 appliance starts with one container. Its image is pinned to the
+The 0.4.4 appliance starts with one container. Its image is pinned to the
 published release digest below; verify its signature as described in
 [RELEASES.md](RELEASES.md). Do not substitute `:latest`.
 
@@ -23,7 +23,7 @@ docker run -d --name vpm --restart unless-stopped --stop-timeout 60 \
   -p 8443:8088 \
   -v vpm_data:/data \
   -v vpm_keys:/keys \
-  ghcr.io/cryptolabsza/vast-price-manager:0.4.0@sha256:20c1e3a4b66ddd723ea1e3c635e0b7dec3f8cc88fe29f4e27e54f1686954eead
+  ghcr.io/cryptolabsza/vast-price-manager:0.4.4@sha256:51811d3388fc6142212eb6d21746fc884e482975dd218a1710d632c0d1f61dd5
 ```
 
 Then open **`https://YOUR-SERVER:8443`** (or `https://localhost:8443` on
