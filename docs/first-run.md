@@ -8,7 +8,7 @@ local-auth setup.
 
 ## Before the first login
 
-Copy `.env.example` to `.env`, which already carries the 0.4.0 release pin,
+Copy `.env.example` to `.env`, which already carries the 0.4.4 release pin,
 then generate the separate master key. VPM's container runs as UID 999, so the
 ownership change is required.
 

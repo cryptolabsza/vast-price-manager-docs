@@ -37,6 +37,7 @@ An explicit environment value always takes precedence over appliance discovery.
 | `VPM_OPERATION_DEADLINE_SECONDS` | `1500` | Overall time budget for one sync/cycle/reconcile run. Must stay shorter than `VPM_LEASE_TTL_SECONDS`. |
 | `VPM_PROVIDER_TIMEOUT_SECONDS` | `15` | Per-request timeout when calling the Vast.ai API. |
 | `VPM_MARKET_SEARCH_LIMIT` | `100` | How many market listings VPM pulls per price check. |
+| `VPM_MARKET_REFRESH_SECONDS` | `1800` | How often VPM searches the market for each GPU type, in seconds (300 to 3600). Vast limits offer searches to 20,000 rows per account per day; a shorter interval spends more of it. Since 0.4.1. |
 | `VPM_AUTH_FAILURE_LIMIT` | `5` | Failed login attempts (per bucket) before a temporary lockout. |
 | `VPM_AUTH_LOCK_SECONDS` | `900` | Length of that lockout. |
 | `VPM_ARGON2_CONCURRENCY` | `2` | Password-hashing CPU parallelism. Only worth changing on a very constrained or very large host. |

@@ -1,6 +1,6 @@
 # Upgrade and backup
 
-VPM 0.4.0 uses database schema 14. Migrations move forward only. Do not start
+VPM 0.4.4 uses database schema 14, the same as 0.4.0, so upgrading from 0.4.0 needs no migration. Migrations move forward only. Do not start
 an older image against a volume that a newer image has migrated; roll back by
 restoring the matching backup instead.
 

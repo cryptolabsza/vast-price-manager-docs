@@ -1,6 +1,6 @@
 # Appliance setup: run, open, follow the browser steps
 
-This is the default 0.4.0 installation path. Its image is pinned to the
+This is the default 0.4.4 installation path. Its image is pinned to the
 published release digest below. Verify its signature through
 [RELEASES.md](../RELEASES.md); do not use a floating tag.
 
@@ -13,7 +13,7 @@ docker run -d --name vpm --restart unless-stopped --stop-timeout 60 \
   -p 8443:8088 \
   -v vpm_data:/data \
   -v vpm_keys:/keys \
-  ghcr.io/cryptolabsza/vast-price-manager:0.4.0@sha256:20c1e3a4b66ddd723ea1e3c635e0b7dec3f8cc88fe29f4e27e54f1686954eead
+  ghcr.io/cryptolabsza/vast-price-manager:0.4.4@sha256:51811d3388fc6142212eb6d21746fc884e482975dd218a1710d632c0d1f61dd5
 ```
 
 Docker Compose users can use `compose.wizard.yml`. No account settings, API

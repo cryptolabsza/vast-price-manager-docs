@@ -22,13 +22,13 @@ or download a release binary from the
 follow its install instructions for your platform.
 
 Or install nothing and run cosign from its official container image against the
-published 0.4.0 reference in [RELEASES.md](../RELEASES.md):
+published 0.4.4 reference in [RELEASES.md](../RELEASES.md):
 
 ```sh
 docker run --rm gcr.io/projectsigstore/cosign:v3.0.6 verify \
-  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.4.0 \
+  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.4.4 \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  ghcr.io/cryptolabsza/vast-price-manager:0.4.0@sha256:20c1e3a4b66ddd723ea1e3c635e0b7dec3f8cc88fe29f4e27e54f1686954eead
+  ghcr.io/cryptolabsza/vast-price-manager:0.4.4@sha256:51811d3388fc6142212eb6d21746fc884e482975dd218a1710d632c0d1f61dd5
 ```
 
 ## Verify
@@ -43,13 +43,13 @@ cosign verify \
   <pinned ref>
 ```
 
-For example, for version `0.4.0`:
+For example, for version `0.4.4`:
 
 ```sh
 cosign verify \
-  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.4.0 \
+  --certificate-identity https://github.com/cryptolabsza/vast-price-manager/.github/workflows/release-image.yml@refs/tags/v0.4.4 \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  ghcr.io/cryptolabsza/vast-price-manager:0.4.0@sha256:20c1e3a4b66ddd723ea1e3c635e0b7dec3f8cc88fe29f4e27e54f1686954eead
+  ghcr.io/cryptolabsza/vast-price-manager:0.4.4@sha256:51811d3388fc6142212eb6d21746fc884e482975dd218a1710d632c0d1f61dd5
 ```
 
 A successful check prints "The cosign claims were validated", confirms the
